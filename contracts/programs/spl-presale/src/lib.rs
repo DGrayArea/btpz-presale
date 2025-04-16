@@ -159,7 +159,7 @@ fn process_refund(
     actual_cost: u64
 ) -> Result<()> {
     let refund = amount_paid.checked_sub(actual_cost)
-        .ok_or(ProgramError::ArithmeticOverflow)?;
+    .ok_or(PresaleError::ArithmeticOverflow)?;
     
     if refund > 0 {
         **buyer.try_borrow_mut_lamports()? += refund;
@@ -337,4 +337,6 @@ pub enum PresaleError {
     InvalidPrice,
     #[msg("Total tokens must be greater than zero.")]
     InvalidTokenAmount,
+    #[msg("Arithmetic overflow occurred.")]
+    ArithmeticOverflow,
 }
